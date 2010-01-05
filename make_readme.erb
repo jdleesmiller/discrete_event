@@ -1,0 +1,40 @@
+= discrete_event
+
+== DESCRIPTION
+
+Some tools for discrete event simulation (DES) in Ruby.
+Ruby provides most of the primitives needed to do DES in many different ways;
+this package provides some extra infrastructure and examples for one simple way.
+See {DiscreteEvent::Simulation} for more information, and see below for an example.
+
+== SYNOPSIS
+
+  require 'rubygems'
+  require 'discrete_event'
+<%= 
+  File.readlines('test/ex_mm1_queue.rb').
+    select{|l| l =~ /^\s{4}/ || l.strip.size == 0}.
+    map{|l| l.sub(/^\s{2}/,'')}
+%>
+
+This and other examples are available in the +test+ directory.
+
+== INSTALL
+
+This is intended to be packaged as a gem, but it's not listed yet.
+Download the source and run rake install.
+
+== REFERENCES
+
+* {http://en.wikipedia.org/wiki/Discrete_event_simulation}
+
+You may also be interested in the Ruby bindings of the GNU Science Library, which provides a variety of pseudo-random number generators and functions for generating random variates from various distributions. It also provides useful things like histograms.
+
+* {http://www.gnu.org/software/gsl/}
+* {http://rb-gsl.rubyforge.org/}
+* The libgsl-ruby package in Debian.
+
+== LICENSE
+
+Copyright (c) 2010 John Lees-Miller. See {file:LICENSE} for details.
+

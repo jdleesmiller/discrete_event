@@ -1,17 +1,18 @@
 require 'rubygems'
 require 'rake'
+require 'erb'
 
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "discrete_event"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Event-based discrete event simulation.}
+    gem.description = %Q{Some simple primitives for event-based discrete event simulation.}
     gem.email = "jdleesmiller@gmail.com"
     gem.homepage = "http://github.com/jdleesmiller/discrete_event"
     gem.authors = ["John Lees-Miller"]
     gem.add_development_dependency "yard", ">= 0"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.add_dependency "pqueue", ">= 1.0.0"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -44,9 +45,19 @@ task :default => :test
 
 begin
   require 'yard'
-  YARD::Rake::YardocTask.new
+  YARD::Rake::YardocTask.new do |t|
+    t.files = ['lib/**/*.rb', '-', 'LICENSE']
+  end
 rescue LoadError
   task :yardoc do
     abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
   end
 end
+
+file "README.rdoc" => ["make_readme.erb"] + Dir["test/ex_*.rb"] do |t|
+  File.open(t.name, 'w') do |f|
+    f.puts(ERB.new(File.read(t.prerequisites.first)).result)
+  end
+end 
+task :yard => "README.rdoc"
+
