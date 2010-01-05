@@ -54,10 +54,22 @@ rescue LoadError
   end
 end
 
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "discrete_event #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('LICENSE')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
 file "README.rdoc" => ["make_readme.erb"] + Dir["test/ex_*.rb"] do |t|
   File.open(t.name, 'w') do |f|
     f.puts(ERB.new(File.read(t.prerequisites.first)).result)
   end
 end 
 task :yard => "README.rdoc"
+task :rdoc => "README.rdoc"
 
