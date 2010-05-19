@@ -41,7 +41,15 @@ module DiscreteEvent
       (class << object; self; end).instance_eval do
         define_method :rand do |*args|
           raise "out of fake_rand numbers" if fakes.empty?
-          fakes.shift
+          r = fakes.shift
+
+          # can be either the rand() or rand(n) form
+          n = args.shift || 0
+          if n == 0
+            r
+          else
+            (r * n).to_i
+          end
         end
       end
     end
