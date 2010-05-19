@@ -11,6 +11,9 @@ See {DiscreteEvent::Simulation} for more information, and see below for an examp
 
 == SYNOPSIS
 
+The following example shows how the {DiscreteEvent::Simulation} class can be
+used to simulate an M/M/1 queueing system.
+
   require 'rubygems'
   require 'discrete_event'
 
@@ -123,6 +126,17 @@ You may also be interested in the Ruby bindings of the GNU Science Library, whic
 * {http://www.gnu.org/software/gsl/}
 * {http://rb-gsl.rubyforge.org/}
 * The libgsl-ruby package in Debian.
+
+== HISTORY
+
+0.1.0
+* first release
+
+0.2.0:
+* added {DiscreteEvent::Simulation#at_each_index}
+* added {DiscreteEvent::Simulation#recur_after}
+* added {DiscreteEvent::Simulation#every}
+* {DiscreteEvent::FakeRand} now supports the Kernel::rand(n) form. 
 
 == LICENSE
 
