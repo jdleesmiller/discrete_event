@@ -1,4 +1,4 @@
-require 'helper'
+require 'test/helper'
 
 require 'test/ex_consumer.rb'
 require 'test/ex_mm1_queue.rb'
@@ -8,8 +8,8 @@ include DiscreteEvent::Example
 
 class TestDiscreteEvent < Test::Unit::TestCase
   def assert_near expected, observed, tol=1e-6
-    assert (expected - observed).abs < tol,
-      "expected |#{expected} - #{observed}| < #{tol}"
+    assert((expected - observed).abs < tol,
+      "expected |#{expected} - #{observed}| < #{tol}")
   end
 
   def test_fake_rand
