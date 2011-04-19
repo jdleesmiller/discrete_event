@@ -63,7 +63,7 @@ module DiscreteEvent
     # @return [nil]
     #
     def self.undo_for object
-      if object.methods.member?("rand")
+      if object.methods.map(&:to_s).member?('rand')
         (class << object; self; end).instance_eval do
           remove_method :rand
         end
