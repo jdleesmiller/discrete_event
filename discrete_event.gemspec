@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = 'discrete_event'
 
-  s.add_runtime_dependency "pqueue", ">= 1.0.0"
-  s.add_development_dependency 'gemma', '>= 1.0.1', '~> 1.0'
+  s.add_runtime_dependency "pqueue", "~> 1.0.0"
+  s.add_development_dependency 'gemma', '~> 1.0.1'
 
   s.files       = Dir.glob('{lib,bin}/**/*.rb') + %w(README.rdoc)
   s.test_files  = Dir.glob('test/*_test.rb')
