@@ -1,7 +1,7 @@
-require 'test/helper'
+require 'discrete_event/test_helper'
 
-require 'test/ex_consumer.rb'
-require 'test/ex_mm1_queue.rb'
+require 'discrete_event/ex_consumer.rb'
+require 'discrete_event/ex_mm1_queue.rb'
 
 include DiscreteEvent
 include DiscreteEvent::Example

@@ -17,12 +17,13 @@ used to simulate an M/M/1 queueing system.
   require 'rubygems'
   require 'discrete_event'
 <%= 
-  File.readlines('test/ex_mm1_queue.rb').
+  File.readlines('test/discrete_event/ex_mm1_queue.rb').
     select{|l| l =~ /^\s{4}/ || l.strip.size == 0}.
     map{|l| l.sub(/^\s{2}/,'')}
 %>
 
-This and other examples are available in the +test+ directory.
+This and other examples are available in the <tt>test/discrete_event</tt>
+directory.
 
 == INSTALL
 
