@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    discrete_event (0.2.0)
+    discrete_event (0.3.0)
       pqueue (~> 1.0.0)
 
 PATH
