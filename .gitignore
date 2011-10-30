@@ -15,7 +15,10 @@ tmtags
 
 ## PROJECT::GENERAL
 coverage
+.yardoc
+yard
 rdoc
 pkg
 
 ## PROJECT::SPECIFIC
+
