@@ -2,17 +2,14 @@
 
 http://github.com/jdleesmiller/discrete_event
 
-== DESCRIPTION
-
-Some tools for discrete event simulation (DES) in Ruby.
-Ruby provides most of the primitives needed to do DES in many different ways;
-this package provides some extra infrastructure and examples for one simple way.
-See {DiscreteEvent::Simulation} for more information, and see below for an example.
-
 == SYNOPSIS
 
-The following example shows how the {DiscreteEvent::Simulation} class can be
-used to simulate an M/M/1 queueing system.
+This gem provides some tools for discrete event simulation (DES) in ruby. The
+main one is a {DiscreteEvent::EventQueue} that stores actions (ruby blocks) to
+be executed at chosen times.
+
+The example below uses the {DiscreteEvent::Simulation} class, which is a
+subclass of {DiscreteEvent::EventQueue}, to simulate an M/M/1 queueing system.
 
   require 'rubygems'
   require 'discrete_event'
@@ -25,9 +22,13 @@ used to simulate an M/M/1 queueing system.
 This and other examples are available in the <tt>test/discrete_event</tt>
 directory.
 
-== INSTALL
+In this example, the whole simulation happens in a single object; if you have
+multiple objects, you can use the {DiscreteEvent::Events} mix-in to make them
+easily share a single event queue.
 
-This is intended to be packaged as a gem, but it's not listed yet.
+== INSTALLATION
+
+  gem install discrete_event
 
 == REFERENCES
 
@@ -41,22 +42,27 @@ You may also be interested in the Ruby bindings of the GNU Science Library, whic
 
 == HISTORY
 
+<em>1.0.0:</em>
+* split {DiscreteEvent::EventQueue} out of DiscreteEvent::Simulation for
+  easier sharing between objects
+* added {DiscreteEvent::Events} mix-in
+
 <em>0.3.0:</em>
 * reorganized for compatibility with gemma 2.0; no functional changes
 * added major, minor and patch version constants
 
 <em>0.2.0:</em>
-* added {DiscreteEvent::Simulation#at_each_index}
-* added {DiscreteEvent::Simulation#recur_after}
-* added {DiscreteEvent::Simulation#every}
-* {DiscreteEvent::FakeRand} now supports the Kernel::rand(n) form. 
+* added DiscreteEvent::Simulation#at_each_index (removed in 1.0.0)
+* added DiscreteEvent::Simulation#recur_after
+* added DiscreteEvent::Simulation#every
+* {DiscreteEvent::FakeRand} now supports the <tt>Kernel::rand(n)</tt> form. 
 
 <em>0.1.0:</em>
 * first release
 
 == LICENSE
 
-Copyright (c) 2010 John Lees-Miller
+Copyright (c) 2010-2011 John Lees-Miller
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
