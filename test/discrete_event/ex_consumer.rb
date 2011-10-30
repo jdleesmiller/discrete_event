@@ -6,11 +6,11 @@ module DiscreteEvent
     # A simple example for testing: consumes and records a set number ({#limit})
     # of random numbers at random intervals.
     #
-    class Consumer < DiscreteEvent::Simulation
+    class ConsumerSim < DiscreteEvent::Simulation
       attr_reader :consumed, :limit
 
-      def initialize limit, start_time = 0.0
-        super(start_time)
+      def initialize limit, now = 0.0
+        super(now)
         @consumed = []
         @limit = limit
       end
@@ -31,5 +31,50 @@ module DiscreteEvent
         consume
       end
     end
+
+    #
+    # A consumer that can participate in a simulation with a {Producer} (i.e.
+    # share the same clock and event queue).
+    #
+    class Consumer
+      include Events
+
+      def initialize event_queue
+        @event_queue = event_queue
+        @objects = []
+        @consumed = []
+      end
+
+      attr_reader :consumed
+
+      def consume object
+        after rand do
+          @consumed << object
+        end
+      end
+    end
+
+    #
+    # See {Consumer}.
+    #
+    class Producer
+      include Events
+
+      def initialize event_queue, objects, consumer
+        @event_queue = event_queue
+        @objects = objects
+        @consumer = consumer
+      end
+
+      def produce
+        unless @objects.empty?
+          after rand do 
+            @consumer.consume @objects.shift
+            produce
+          end
+        end
+      end
+    end
   end
 end
+

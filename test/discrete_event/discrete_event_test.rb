@@ -13,7 +13,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
   end
 
   def test_fake_rand
-    c = Consumer.new 3
+    c = ConsumerSim.new 3
 
     # Before faking.
     c.run
@@ -148,16 +148,79 @@ class TestDiscreteEvent < Test::Unit::TestCase
 
   Alert = Struct.new(:when, :message)
 
-  def test_at_each_index
+  def test_at_each_with_symbol
     output = []
     DiscreteEvent.simulation {
       alerts = [Alert.new(12, "ha!"), Alert.new(42, "ah!")] # and many more
-      at_each_index alerts.map{|a| a.when} do |i|
-        output << now << alerts[i].message
+      at_each alerts, :when do |alert|
+        output << now << alert.message
       end
       run
     }
     assert_equal [12, 'ha!', 42, 'ah!'], output
+  end
+
+  def test_at_each_with_proc
+    output = []
+    DiscreteEvent.simulation {
+      alerts = [Alert.new(12, "ha!"), Alert.new(42, "ah!")] # and many more
+      at_each(alerts, proc{|alert| alert.when}) do |alert|
+        output << now << alert.message
+      end
+      run
+    }
+    assert_equal [12, 'ha!', 42, 'ah!'], output
+  end
+
+  Alert2 = Struct.new(:time, :message)
+  def test_at_each_with_default
+    output = []
+    DiscreteEvent.simulation {
+      alerts = [Alert2.new(12, "ha!"), Alert2.new(42, "ah!")] # and many more
+      at_each alerts do |alert|
+        output << now << alert.message
+      end
+      run
+    }
+    assert_equal [12, 'ha!', 42, 'ah!'], output
+  end
+
+  def test_next_event_time
+    output= []
+    s = DiscreteEvent.simulation {
+      at 0 do
+        output << next_event_time
+      end
+
+      at 5 do
+        output << next_event_time
+      end
+    }
+    assert_equal 0, s.next_event_time
+    assert s.run_next
+    assert_equal 5, s.next_event_time
+    assert s.run_next
+    assert_nil s.next_event_time
+
+    # as currently implemented, the "next" event includes the current event
+    assert_equal [0, 5], output
+  end
+
+  def test_enumerator
+    output = []
+    output_times = []
+    eq = EventQueue.new
+    eq.at 13 do
+      output << 'hi'
+    end
+    eq.at 42 do
+      output << 'bye'
+    end
+    for t in eq.to_enum
+      output_times << t
+    end
+    assert_equal %w(hi bye), output
+    assert_equal [13, 42], output_times
   end
   
   def test_mm1_queue_demo
@@ -166,4 +229,29 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_near exp_q, 0.5   # mean queue = rho^2 / (1 - rho)
     assert_near exp_w, 2.0   # mean wait  = rho / (mu - lambda)
   end
+
+  def test_producer_consumer
+    event_queue = EventQueue.new(0)
+    consumer = Consumer.new(event_queue)
+    producer = Producer.new(event_queue, %w(a b c d), consumer)
+
+    FakeRand.for(consumer, 2, 2, 2, 2)
+    FakeRand.for(producer, 1, 1, 1, 1)
+
+    producer.produce
+    output = []
+    event_queue.each do |now|
+      output << [now, consumer.consumed.dup]
+    end
+    assert_equal [
+      [1, []],                # first object produced
+      [2, []],                # second object produced
+      [3, ["a"]],             # third object produced / first consumed
+      [3, ["a"]],
+      [4, ["a", "b"]],        # fourth object produced / second consumed
+      [4, ["a", "b"]],
+      [5, ["a", "b", "c"]],   # third and fourth objects consumed
+      [6, ["a", "b", "c", "d"]]], output
+  end
 end
+

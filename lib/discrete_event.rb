@@ -1,5 +1,7 @@
 require 'pqueue'
 
+require 'discrete_event/event_queue'
+require 'discrete_event/events'
 require 'discrete_event/simulation'
 require 'discrete_event/fake_rand'
 
