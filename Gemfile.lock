@@ -4,8 +4,8 @@ PATH
     discrete_event (0.3.0)
       pqueue (~> 1.0.0)
 
-PATH
-  remote: ../gemma
+GEM
+  remote: http://rubygems.org/
   specs:
     gemma (2.0.0)
       bundler (~> 1.0.18)
@@ -14,20 +14,22 @@ PATH
       rake (~> 0.9.2)
       rdoc (~> 3.9.4)
       yard (~> 0.7.2)
-
-GEM
-  remote: http://rubygems.org/
-  specs:
     highline (1.6.2)
     minitest (2.5.1)
+    multi_json (1.0.3)
     pqueue (1.0.0)
-    rake (0.9.2)
+    rake (0.9.2.2)
     rdoc (3.9.4)
-    yard (0.7.2)
+    simplecov (0.5.4)
+      multi_json (~> 1.0.3)
+      simplecov-html (~> 0.5.3)
+    simplecov-html (0.5.3)
+    yard (0.7.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   discrete_event!
-  gemma!
+  gemma (~> 2.0.0)
+  simplecov (~> 0.5.4)

@@ -1,4 +1,4 @@
 source "http://rubygems.org" 
 gemspec
 
-gem 'gemma', :path => '../gemma'
+gem 'simplecov', '~> 0.5.4'
