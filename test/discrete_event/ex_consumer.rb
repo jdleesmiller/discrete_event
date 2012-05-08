@@ -52,6 +52,8 @@ module DiscreteEvent
           @consumed << object
         end
       end
+
+      attr_reader :event_queue
     end
 
     #
@@ -74,6 +76,10 @@ module DiscreteEvent
           end
         end
       end
+
+      private
+
+      attr_reader :event_queue
     end
   end
 end
