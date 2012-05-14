@@ -13,7 +13,7 @@ module DiscreteEvent
   #
   class EventQueue
     #
-    # Event queue entry for events; you do not need to use this class directly.
+    # Event queue entry for events.
     #
     Event = Struct.new(:time, :action)
 
@@ -46,12 +46,13 @@ module DiscreteEvent
     #
     # @yield [] action to be run at +time+
     #
-    # @return [nil]
+    # @return [Event]
     #
     def at time, &action
       raise "cannot schedule event in the past" if time < now
-      @events.push(Event.new(time, action))
-      nil
+      event = Event.new(time, action)
+      @events.push(event)
+      event
     end
 
     #
@@ -62,10 +63,31 @@ module DiscreteEvent
     #
     # @yield [] action to be run after +delay+
     #
-    # @return [nil]
+    # @return [Event]
     #
     def after delay, &action
       at(@now + delay, &action)
+    end
+
+    #
+    # Cancel an event previously created with {#at} or {#after}.
+    #
+    # @param [Event] event the event to cancel
+    #
+    # @return [nil]
+    #
+    def cancel event
+      # not very efficient but hopefully not used very often
+      temp = []
+      until @events.empty? || @events.top.time > event.time
+        e = @events.pop
+        break if e.equal?(event)
+        temp << e
+      end
+      temp.each do |e|
+        @events.push(e)
+      end
+      nil
     end
 
     #

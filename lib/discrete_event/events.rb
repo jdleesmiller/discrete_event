@@ -14,7 +14,7 @@ module DiscreteEvent
     #
     # @yield [] action to be run at +time+
     #
-    # @return [nil]
+    # @return [Event]
     #
     def at time, &action
       event_queue.at(time, &action)
@@ -27,10 +27,19 @@ module DiscreteEvent
     #
     # @yield [] action to be run after +delay+
     #
-    # @return [nil]
+    # @return [Event]
     #
     def after delay, &action
       event_queue.after(delay, &action)
+    end
+
+    #
+    # See {EventQueue#cancel}.
+    #
+    # @return [nil]
+    #
+    def cancel event
+      event_queue.cancel(event)
     end
 
     #
