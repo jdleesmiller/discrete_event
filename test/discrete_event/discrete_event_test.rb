@@ -389,5 +389,26 @@ class TestDiscreteEvent < Test::Unit::TestCase
     3.times { assert q.run_next }
     assert_equal [9, :b, 18], out
   end
+
+  def test_run_to
+    q = EventQueue.new(0)
+    out = []
+    q.at 10 do
+      out << :a
+    end
+
+    # run to just before the first event; it should not fire
+    q.run_to 9
+    assert_equal [], out
+    assert_equal 9, q.now
+
+    q.run_to 10
+    assert_equal [:a], out
+    assert_equal 10, q.now
+
+    # running again should have no effect
+    q.run_to 10
+    assert_equal [:a], out
+  end
 end
 
