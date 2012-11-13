@@ -202,8 +202,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert s.run_next
     assert_nil s.next_event_time
 
-    # as currently implemented, the "next" event includes the current event
-    assert_equal [0, 5], output
+    assert_equal [5, nil], output
   end
 
   def test_enumerator
@@ -290,6 +289,26 @@ class TestDiscreteEvent < Test::Unit::TestCase
     q.cancel e_a
     nil while q.run_next
     assert_equal [:b], out
+  end
+
+  def test_cancel_first2
+    out = []
+    q = EventQueue.new(0)
+
+    e_a = q.at( 5) do
+      out << :a
+
+      e_c = q.at(6) { out << :c }
+      
+      q.cancel e_a # This should have no effect
+    end
+
+    e_b = q.at(10) do
+      out << :b
+    end
+    
+    nil while q.run_next
+    assert_equal [:a, :c, :b], out
   end
 
   def test_cancel_last

@@ -238,25 +238,17 @@ module DiscreteEvent
     # @return [Boolean] false if there are no more events.
     #
     def run_next
-      event = @events.top
+      event = @events.pop
       if event
         # run the action
         @now = event.time
         event.action.call
 
-        # recurring events get special treatment: can avoid doing a push and a
-        # pop by reusing the Event at the top of the heap, but with a new time
-        #
-        # NB: this assumes that the top element in the heap can't change due to
-        # the event that we just ran, which is the case here, because we don't
-        # allow events to be created in the past, and because of the internals
-        # of the PQueue datastructure
+        # Handle recurring events.
         if @recur_interval
           event.time = @now + @recur_interval
-          @events.replace_top(event)
+          @events.push(event)
           @recur_interval = nil
-        else
-          @events.pop
         end
 
         true
