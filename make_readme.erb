@@ -2,6 +2,8 @@
 
 http://github.com/jdleesmiller/discrete_event
 
+{<img src="https://secure.travis-ci.org/jdleesmiller/discrete_event.png"/>}[http://travis-ci.org/jdleesmiller/discrete_event]
+
 == SYNOPSIS
 
 This gem provides some tools for discrete event simulation (DES) in ruby. The
@@ -41,6 +43,11 @@ You may also be interested in the Ruby bindings of the GNU Science Library, whic
 * The libgsl-ruby package in Debian.
 
 == HISTORY
+
+<em>1.1.0:</em>
+* compatibility with PQueue 2.x; fix for event cancellation (thanks: joshcarter)
+* added {DiscreteEvent::EventQueue#run_to}
+* updated dependency versions
 
 <em>1.0.0:</em>
 * split {DiscreteEvent::EventQueue} out of DiscreteEvent::Simulation for

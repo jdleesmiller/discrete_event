@@ -13,7 +13,7 @@ module DiscreteEvent
   #
   class EventQueue
     #
-    # Event queue entry for events; you do not need to use this class directly.
+    # Event queue entry for events.
     #
     Event = Struct.new(:time, :action)
 
@@ -21,7 +21,7 @@ module DiscreteEvent
     # Current time (taken from the currently executing event, if any). You can
     # use floating point or integer time.
     #
-    # @return [Number]
+    # @return [Numeric]
     #
     attr_reader :now
 
@@ -42,30 +42,52 @@ module DiscreteEvent
     # Schedule +action+ (a block) to run at the given +time+; +time+ must not be
     # in the past.
     #
-    # @param [Number] time at which +action+ should run; must be >= {#now}
+    # @param [Numeric] time at which +action+ should run; must be >= {#now}
     #
     # @yield [] action to be run at +time+
     #
-    # @return [nil]
+    # @return [Event]
     #
     def at time, &action
       raise "cannot schedule event in the past" if time < now
-      @events.push(Event.new(time, action))
-      nil
+      event = Event.new(time, action)
+      @events.push(event)
+      event
     end
 
     #
     # Schedule +action+ (a block) to run after the given +delay+ (with respect
     # to {#now}).
     #
-    # @param [Number] delay after which +action+ should run; non-negative
+    # @param [Numeric] delay after which +action+ should run; non-negative
     #
     # @yield [] action to be run after +delay+
     #
-    # @return [nil]
+    # @return [Event]
     #
     def after delay, &action
       at(@now + delay, &action)
+    end
+
+    #
+    # Cancel an event previously created with {#at} or {#after}.
+    #
+    # @param [Event] event the event to cancel
+    #
+    # @return [nil]
+    #
+    def cancel event
+      # not very efficient but hopefully not used very often
+      temp = []
+      until @events.empty? || @events.top.time > event.time
+        e = @events.pop
+        break if e.equal?(event)
+        temp << e
+      end
+      temp.each do |e|
+        @events.push(e)
+      end
+      nil
     end
 
     #
@@ -152,7 +174,7 @@ module DiscreteEvent
     # but it is somewhat more efficient to call +recur_after+, and, if you do,
     # the named method is not necessary.
     #
-    # @param [Number] interval non-negative
+    # @param [Numeric] interval non-negative
     #
     # @return [nil]
     #
@@ -199,7 +221,7 @@ module DiscreteEvent
     # (that is, the current event hasn't finished yet, so it's still in some
     # sense the next event).
     #
-    # @return [Number, nil] 
+    # @return [Numeric, nil] 
     #
     def next_event_time
       event = @events.top
@@ -216,25 +238,17 @@ module DiscreteEvent
     # @return [Boolean] false if there are no more events.
     #
     def run_next
-      event = @events.top
+      event = @events.pop
       if event
         # run the action
         @now = event.time
         event.action.call
 
-        # recurring events get special treatment: can avoid doing a push and a
-        # pop by reusing the Event at the top of the heap, but with a new time
-        #
-        # NB: this assumes that the top element in the heap can't change due to
-        # the event that we just ran, which is the case here, because we don't
-        # allow events to be created in the past, and because of the internals
-        # of the PQueue datastructure
+        # Handle recurring events.
         if @recur_interval
           event.time = @now + @recur_interval
-          @events.replace_top(event)
+          @events.push(event)
           @recur_interval = nil
-        else
-          @events.pop
         end
 
         true
@@ -244,10 +258,30 @@ module DiscreteEvent
     end
 
     #
-    # Allow for the creation of a ruby +Enumerator+ for the simulation. This
-    # yields for each event.
+    # Run events until the given time (inclusive). When this method returns,
+    # {#now} is +time+, and all events scheduled to run at times up to and
+    # including +time+ have been run.
     #
-    # @example TODO
+    # @param [Numeric] time to run to (inclusive)
+    #
+    # @return [nil]
+    #
+    def run_to time
+      # add an event to ensure that we actually stop at the given time, even if
+      # there isn't an event in the queue
+      at time do
+        # nothing
+      end
+      run_next until @events.empty? || next_event_time > time
+      nil
+    end
+
+    #
+    # Allow for the creation of a ruby +Enumerator+ for the simulation. This
+    # yields for each event. Note that this enumerator may return infinitely
+    # many events, if there are repeating events ({#every}).
+    #
+    # @example
     #   eq = EventQueue.new
     #   eq.at 13 do
     #     puts "hi"
@@ -261,7 +295,7 @@ module DiscreteEvent
     #
     # @yield [now] called immediately after each event runs
     #
-    # @yieldparam [Number] now as {#now}
+    # @yieldparam [Numeric] now as {#now}
     #
     # @return [self]
     #

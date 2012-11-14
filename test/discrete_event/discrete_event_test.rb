@@ -202,8 +202,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert s.run_next
     assert_nil s.next_event_time
 
-    # as currently implemented, the "next" event includes the current event
-    assert_equal [0, 5], output
+    assert_equal [5, nil], output
   end
 
   def test_enumerator
@@ -252,6 +251,183 @@ class TestDiscreteEvent < Test::Unit::TestCase
       [4, ["a", "b"]],
       [5, ["a", "b", "c"]],   # third and fourth objects consumed
       [6, ["a", "b", "c", "d"]]], output
+  end
+
+  def test_cancel_single
+    #
+    # cancel the only event in the queue
+    #
+    out = []
+    q = EventQueue.new(0)
+    e_a = q.at( 5) { out << :a }
+    q.cancel e_a
+    assert !q.run_next
+    assert_equal [], out
+  end
+
+  def test_cancel_empty
+    #
+    # cancel an event in the past; this should have no effect
+    #
+    out = []
+    q = EventQueue.new(0)
+    e_a = q.at( 5) { out << :a }
+    assert q.run_next
+    assert_equal [:a], out
+    q.cancel e_a
+    assert !q.run_next
+  end
+
+  def test_cancel_first
+    #
+    # should be able to cancel the first (next) event in the queue
+    #
+    out = []
+    q = EventQueue.new(0)
+    e_a = q.at( 5) { out << :a }
+    e_b = q.at(10) { out << :b }
+    q.cancel e_a
+    nil while q.run_next
+    assert_equal [:b], out
+  end
+
+  def test_cancel_first2
+    out = []
+    q = EventQueue.new(0)
+
+    e_a = q.at( 5) do
+      out << :a
+
+      e_c = q.at(6) { out << :c }
+      
+      q.cancel e_a # This should have no effect
+    end
+
+    e_b = q.at(10) do
+      out << :b
+    end
+    
+    nil while q.run_next
+    assert_equal [:a, :c, :b], out
+  end
+
+  def test_cancel_last
+    #
+    # should be able to cancel the last event in the queue
+    #
+    out = []
+    q = EventQueue.new(0)
+    e_a = q.at( 5) { out << :a }
+    e_b = q.at(10) { out << :b }
+    q.cancel e_b
+    nil while q.run_next
+    assert_equal [:a], out
+  end
+
+  def test_cancel_middle
+    #
+    # should be able to cancel an event in the middle of the queue
+    #
+    out = []
+    q = EventQueue.new(0)
+    e_a = q.at( 5) { out << :a }
+    e_b = q.at(10) { out << :b }
+    e_c = q.at(13) { out << :c }
+    q.cancel e_b
+    nil while q.run_next
+    assert_equal [:a, :c], out
+  end
+
+  def test_cancel_at_same_time_1
+    #
+    # if there are two events at the same time, and we cancel one of them, the
+    # correct event should be cancelled (can't just compare on times)
+    #
+    out = []
+    q = EventQueue.new(0)
+    e_a = q.at 10 do
+      out << :a
+    end
+    e_b = q.at 10 do
+      out << :b
+    end
+    assert !e_a.equal?(e_b)
+    q.cancel e_a
+    nil while q.run_next
+    assert_equal [:b], out
+  end
+
+  def test_cancel_at_same_time_2
+    #
+    # see test_cancel_at_same_time_1
+    #
+    out = []
+    q = EventQueue.new(0)
+    e_a = q.at 10 do
+      out << :a
+    end
+    e_b = q.at 10 do
+      out << :b
+    end
+    q.cancel e_b
+    nil while q.run_next
+    assert_equal [:a], out
+  end
+
+  def test_cancel_self
+    #
+    # not sure that there is any reason to do this, but it should work
+    #
+    q = EventQueue.new(0)
+    out = []
+    @e_a = nil
+    @e_a = q.at 3 do
+      out << :a
+      q.cancel @e_a
+    end
+    nil while q.run_next
+    assert_equal [:a], out
+  end
+
+  def test_cancel_from_every_block
+    #
+    # check that we don't change the top event when we cancel
+    #
+    q = EventQueue.new(0)
+    out = []
+    e_a = q.at 10 do # will cancel this one
+      out << :a
+    end
+    q.every 9, 9 do
+      out << q.now
+      q.cancel e_a
+    end
+    q.at 9 do # same time as first instance of repeating event
+      out << :b
+    end
+    3.times { assert q.run_next }
+    assert_equal [9, :b, 18], out
+  end
+
+  def test_run_to
+    q = EventQueue.new(0)
+    out = []
+    q.at 10 do
+      out << :a
+    end
+
+    # run to just before the first event; it should not fire
+    q.run_to 9
+    assert_equal [], out
+    assert_equal 9, q.now
+
+    q.run_to 10
+    assert_equal [:a], out
+    assert_equal 10, q.now
+
+    # running again should have no effect
+    q.run_to 10
+    assert_equal [:a], out
   end
 end
 

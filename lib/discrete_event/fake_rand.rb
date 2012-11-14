@@ -16,7 +16,7 @@ module DiscreteEvent
   #   class Foo
   #     def do_stuff
   #       # NB: FakeRand.for won't work if you write "Kernel::rand" instead of
-  #       # just "rand," here.
+  #       # just "rand" here.
   #       puts rand
   #     end
   #   end
