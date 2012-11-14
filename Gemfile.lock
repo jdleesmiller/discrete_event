@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     discrete_event (0.3.0)
-      pqueue
+      pqueue (~> 2.0.2)
 
 GEM
   remote: http://rubygems.org/
@@ -33,5 +33,5 @@ PLATFORMS
 
 DEPENDENCIES
   discrete_event!
-  gemma
+  gemma (~> 2.4.0)
   simplecov
