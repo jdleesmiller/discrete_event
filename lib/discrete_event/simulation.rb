@@ -16,10 +16,10 @@ module DiscreteEvent
     end
 
     #
-    # Run (or continue, if there are existing events) the simulation until 
+    # Run (or continue, if there are existing events) the simulation until
     # +:stop+ is thrown, or there are no more events.
     #
-    # @yield [] after each event runs 
+    # @yield [] after each event runs
     # @return [nil]
     #
     def run &block
@@ -34,4 +34,3 @@ module DiscreteEvent
     end
   end
 end
-

@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
- 
+
 require 'discrete_event/version'
- 
+
 Gem::Specification.new do |s|
   s.name              = 'discrete_event'
   s.version           = DiscreteEvent::VERSION
@@ -28,4 +28,3 @@ Gem::Specification.new do |s|
     "--title",   "#{s.full_name} Documentation"]
   s.extra_rdoc_files << "README.rdoc"
 end
-

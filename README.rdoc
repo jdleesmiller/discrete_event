@@ -150,7 +150,7 @@ You may also be interested in the Ruby bindings of the GNU Science Library, whic
 * added DiscreteEvent::Simulation#at_each_index (removed in 1.0.0)
 * added DiscreteEvent::Simulation#recur_after
 * added DiscreteEvent::Simulation#every
-* {DiscreteEvent::FakeRand} now supports the <tt>Kernel::rand(n)</tt> form. 
+* {DiscreteEvent::FakeRand} now supports the <tt>Kernel::rand(n)</tt> form.
 
 <em>0.1.0:</em>
 * first release
@@ -177,4 +177,3 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-

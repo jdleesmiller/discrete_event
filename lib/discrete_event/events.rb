@@ -78,7 +78,7 @@ module DiscreteEvent
       event_queue.recur_after(interval)
     end
 
-    # 
+    #
     # See {EventQueue#every}.
     #
     # @param [Numeric] interval non-negative
@@ -100,4 +100,3 @@ module DiscreteEvent
     end
   end
 end
-

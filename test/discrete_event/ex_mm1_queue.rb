@@ -94,4 +94,3 @@ module DiscreteEvent
     end
   end
 end
-

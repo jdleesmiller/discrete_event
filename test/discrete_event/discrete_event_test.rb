@@ -59,7 +59,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     # Now have run out of fakes.
     assert_raise(RuntimeError){ o.test }
   end
-  
+
   def test_mm1_queue_not_busy
     # Service begins immediately when queue is not busy.
     q = MM1Queue.new 0.5, 1.0
@@ -75,7 +75,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_near 4.0, q.served[1].service_begin
     assert_near 5.0, q.served[1].service_end
   end
-  
+
   def test_mm1_queue_busy
     # Service begins after previous customer when queue is busy.
     q = MM1Queue.new 0.5, 1.0
@@ -221,7 +221,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal %w(hi bye), output
     assert_equal [13, 42], output_times
   end
-  
+
   def test_mm1_queue_demo
     # Just run the demo... 1000 isn't enough to get a reliable average.
     obs_q, exp_q, obs_w, exp_w= mm1_queue_demo(0.25, 0.5, 1000)
@@ -299,14 +299,14 @@ class TestDiscreteEvent < Test::Unit::TestCase
       out << :a
 
       e_c = q.at(6) { out << :c }
-      
+
       q.cancel e_a # This should have no effect
     end
 
     e_b = q.at(10) do
       out << :b
     end
-    
+
     nil while q.run_next
     assert_equal [:a, :c, :b], out
   end
@@ -430,4 +430,3 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal [:a], out
   end
 end
-

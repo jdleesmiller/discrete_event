@@ -93,7 +93,7 @@ module DiscreteEvent
     #
     # Schedule +action+ (a block) to run for each element in the given list
     # (possibly at different times).
-    # 
+    #
     # This method may be of interest if you have a large number of events that
     # occur at known times. You could use {#at} to add each one to the event
     # queue at the start of the simulation, but this will make adding other
@@ -133,10 +133,10 @@ module DiscreteEvent
         if time.nil?
           element_time = element.time
         elsif time.is_a? Proc
-          element_time = time.call(element) 
+          element_time = time.call(element)
         elsif time.is_a? Symbol
           element_time = element.send(time)
-        else 
+        else
           raise ArgumentError, "bad time"
         end
 
@@ -184,7 +184,7 @@ module DiscreteEvent
       nil
     end
 
-    # 
+    #
     # Schedule +action+ (a block) to run periodically.
     #
     # This is useful for statistics collection.
@@ -221,7 +221,7 @@ module DiscreteEvent
     # (that is, the current event hasn't finished yet, so it's still in some
     # sense the next event).
     #
-    # @return [Numeric, nil] 
+    # @return [Numeric, nil]
     #
     def next_event_time
       event = @events.top
@@ -304,7 +304,7 @@ module DiscreteEvent
       self
     end
 
-    # 
+    #
     # Clear any pending events in the event queue and reset {#now}.
     #
     # @return [self]
@@ -316,4 +316,3 @@ module DiscreteEvent
     end
   end
 end
-

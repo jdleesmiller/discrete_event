@@ -11,7 +11,7 @@ file "README.rdoc" => ["make_readme.erb"] + Dir["test/ex_*.rb"] do |t|
   File.open(t.name, 'w') do |f|
     f.puts(ERB.new(File.read(t.prerequisites.first)).result)
   end
-end 
+end
 
 task :yard => "README.rdoc"
 task :rdoc => "README.rdoc"
@@ -28,4 +28,3 @@ task :rdoc => "README.rdoc"
 #    abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
 #  end
 #end
-
