@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-source "http://rubygems.org"
+source 'http://rubygems.org'
 gemspec
 
 # Lock rainbow to avoid https://github.com/sickill/rainbow/issues/48

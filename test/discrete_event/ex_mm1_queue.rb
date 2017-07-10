@@ -76,7 +76,7 @@ module DiscreteEvent
       total_wait = 0.0
       q.run do
         unless q.served.empty?
-          raise "confused" if q.served.size > 1
+          raise 'confused' if q.served.size > 1
           c = q.served.shift
           total_queue += c.queue_on_arrival
           total_wait  += c.service_begin - c.arrival_time

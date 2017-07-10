@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.executables = Dir.glob('bin/*').map{ |f| File.basename(f) }
 
   s.rdoc_options = [
-    "--main",    "README.rdoc",
-    "--title",   "#{s.full_name} Documentation"]
-  s.extra_rdoc_files << "README.rdoc"
+    '--main',    'README.rdoc',
+    '--title',   "#{s.full_name} Documentation"]
+  s.extra_rdoc_files << 'README.rdoc'
 end

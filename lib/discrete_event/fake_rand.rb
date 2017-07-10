@@ -41,7 +41,7 @@ module DiscreteEvent
       undo_for(object) # in case rand is already faked
       (class << object; self; end).instance_eval do
         define_method :rand do |*args|
-          raise "out of fake_rand numbers" if fakes.empty?
+          raise 'out of fake_rand numbers' if fakes.empty?
           r = fakes.shift
 
           # can be either the rand() or rand(n) form

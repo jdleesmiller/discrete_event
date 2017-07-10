@@ -152,7 +152,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
   def test_at_each_with_symbol
     output = []
     DiscreteEvent.simulation {
-      alerts = [Alert.new(12, "ha!"), Alert.new(42, "ah!")] # and many more
+      alerts = [Alert.new(12, 'ha!'), Alert.new(42, 'ah!')] # and many more
       at_each alerts, :when do |alert|
         output << now << alert.message
       end
@@ -164,7 +164,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
   def test_at_each_with_proc
     output = []
     DiscreteEvent.simulation {
-      alerts = [Alert.new(12, "ha!"), Alert.new(42, "ah!")] # and many more
+      alerts = [Alert.new(12, 'ha!'), Alert.new(42, 'ah!')] # and many more
       at_each(alerts, proc{ |alert| alert.when }) do |alert|
         output << now << alert.message
       end
@@ -177,7 +177,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
   def test_at_each_with_default
     output = []
     DiscreteEvent.simulation {
-      alerts = [Alert2.new(12, "ha!"), Alert2.new(42, "ah!")] # and many more
+      alerts = [Alert2.new(12, 'ha!'), Alert2.new(42, 'ah!')] # and many more
       at_each alerts do |alert|
         output << now << alert.message
       end
@@ -246,12 +246,12 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal [
       [1, []],                # first object produced
       [2, []],                # second object produced
-      [3, ["a"]],             # third object produced / first consumed
-      [3, ["a"]],
-      [4, ["a", "b"]],        # fourth object produced / second consumed
-      [4, ["a", "b"]],
-      [5, ["a", "b", "c"]],   # third and fourth objects consumed
-      [6, ["a", "b", "c", "d"]]], output
+      [3, ['a']],             # third object produced / first consumed
+      [3, ['a']],
+      [4, ['a', 'b']],        # fourth object produced / second consumed
+      [4, ['a', 'b']],
+      [5, ['a', 'b', 'c']],   # third and fourth objects consumed
+      [6, ['a', 'b', 'c', 'd']]], output
   end
 
   def test_cancel_single

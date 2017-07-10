@@ -50,7 +50,7 @@ module DiscreteEvent
     # @return [Event]
     #
     def at(time, &action)
-      raise "cannot schedule event in the past" if time < now
+      raise 'cannot schedule event in the past' if time < now
       event = Event.new(time, action)
       @events.push(event)
       event
@@ -138,7 +138,7 @@ module DiscreteEvent
         elsif time.is_a? Symbol
           element_time = element.send(time)
         else
-          raise ArgumentError, "bad time"
+          raise ArgumentError, 'bad time'
         end
 
         at element_time do
@@ -180,7 +180,7 @@ module DiscreteEvent
     # @return [nil]
     #
     def recur_after(interval)
-      raise "cannot recur twice" if @recur_interval
+      raise 'cannot recur twice' if @recur_interval
       @recur_interval = interval
       nil
     end
