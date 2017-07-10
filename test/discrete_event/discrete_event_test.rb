@@ -27,7 +27,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal [0.125, 0.375, 0.875], c.consumed
 
     # Now have run out of fakes.
-    assert_raise(RuntimeError){ c.reset.run }
+    assert_raise(RuntimeError) { c.reset.run }
 
     # See what happens if we fake twice.
     FakeRand.for(c, 0.5, 0.25, 0.125)
@@ -35,7 +35,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal [0.5, 0.75, 0.875], c.consumed
 
     # Now have run out of fakes, again.
-    assert_raise(RuntimeError){ c.reset.run }
+    assert_raise(RuntimeError) { c.reset.run }
 
     # Can undo and get original behavior back.
     FakeRand.undo_for(c)
@@ -59,7 +59,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal 10, o.test
 
     # Now have run out of fakes.
-    assert_raise(RuntimeError){ o.test }
+    assert_raise(RuntimeError) { o.test }
   end
 
   def test_mm1_queue_not_busy
@@ -166,7 +166,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     output = []
     DiscreteEvent.simulation {
       alerts = [Alert.new(12, 'ha!'), Alert.new(42, 'ah!')] # and many more
-      at_each(alerts, proc{ |alert| alert.when }) do |alert|
+      at_each(alerts, proc { |alert| alert.when }) do |alert|
         output << now << alert.message
       end
       run
