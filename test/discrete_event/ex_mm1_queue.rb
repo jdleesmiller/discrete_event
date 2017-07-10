@@ -21,14 +21,15 @@ module DiscreteEvent
 
       def initialize(arrival_rate, service_rate)
         super()
-        @arrival_rate, @service_rate = arrival_rate, service_rate
+        @arrival_rate = arrival_rate
+        @service_rate = service_rate
         @system = []
         @served = []
       end
 
       # Sample from Exponential distribution with given mean rate.
       def rand_exp(rate)
-        -Math::log(rand)/rate
+        -Math.log(rand) / rate
       end
 
       # Customer arrival process.
@@ -57,7 +58,11 @@ module DiscreteEvent
       # Number of customers currently waiting for service (does not include
       # the one (if any) currently being served).
       def queue_length
-        if system.empty? then 0 else system.length - 1 end
+        if system.empty?
+          0
+        else
+          system.length - 1
+        end
       end
 
       # Called by super.run.
@@ -91,8 +96,10 @@ module DiscreteEvent
       expected_mean_wait = rho / (service_rate - arrival_rate)
       expected_mean_queue = arrival_rate * expected_mean_wait
 
-      return total_queue / num_served, expected_mean_queue,
-             total_wait  / num_served, expected_mean_wait
+      [
+        total_queue / num_served, expected_mean_queue,
+        total_wait  / num_served, expected_mean_wait
+      ]
     end
   end
 end

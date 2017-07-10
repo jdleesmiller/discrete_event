@@ -10,8 +10,10 @@ include DiscreteEvent::Example
 
 class TestDiscreteEvent < Test::Unit::TestCase
   def assert_near(expected, observed, tol = 1e-6)
-    assert((expected - observed).abs < tol,
-      "expected |#{expected} - #{observed}| < #{tol}")
+    assert(
+      (expected - observed).abs < tol,
+      "expected |#{expected} - #{observed}| < #{tol}"
+    )
   end
 
   def test_fake_rand
@@ -65,7 +67,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
   def test_mm1_queue_not_busy
     # Service begins immediately when queue is not busy.
     q = MM1Queue.new 0.5, 1.0
-    fakes = [1, 1, 1, 1, 1].map { |x| 1/Math::E**x }
+    fakes = [1, 1, 1, 1, 1].map { |x| 1 / Math::E**x }
     FakeRand.for(q, *fakes)
     q.run do
       throw :stop if q.served.size >= 2
@@ -81,11 +83,13 @@ class TestDiscreteEvent < Test::Unit::TestCase
   def test_mm1_queue_busy
     # Service begins after previous customer when queue is busy.
     q = MM1Queue.new 0.5, 1.0
-    fakes = [0.1, 0.1, # arrival, service for first customer
+    fakes = [
+      0.1, 0.1,        # arrival, service for first customer
       0.01, 0.01,      # arrival times for second two customers
       1,               # arrival for forth customer
       0.1, 0.1,        # service times for second two customers
-      1].map { |x| 1/Math::E**x }
+      1
+    ].map { |x| 1 / Math::E**x }
     FakeRand.for(q, *fakes)
     q.run do
       throw :stop if q.served.size >= 3
@@ -103,14 +107,14 @@ class TestDiscreteEvent < Test::Unit::TestCase
 
   def test_recur_after
     output = []
-    DiscreteEvent.simulation {
+    DiscreteEvent.simulation do
       at 0 do
         output << now
         recur_after 5 if now < 20
       end
 
       run
-    }
+    end
     assert_equal [0, 5, 10, 15, 20], output
   end
 
@@ -119,7 +123,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     # displace the root element, even if you call after(0), which is just an
     # edge case anyway.
     output = []
-    DiscreteEvent.simulation {
+    DiscreteEvent.simulation do
       at 0 do
         output << now
         after 0 do
@@ -132,19 +136,19 @@ class TestDiscreteEvent < Test::Unit::TestCase
       end
 
       run
-    }
+    end
     assert_equal [0, 42, 13, 5, 42, 13, 10, 42, 13], output
   end
 
   def test_every
     output = []
-    DiscreteEvent.simulation {
+    DiscreteEvent.simulation do
       every 3 do
         output << now
         throw :stop if now > 10
       end
       run
-    }
+    end
     assert_equal [0, 3, 6, 9, 12], output
   end
 
@@ -152,44 +156,44 @@ class TestDiscreteEvent < Test::Unit::TestCase
 
   def test_at_each_with_symbol
     output = []
-    DiscreteEvent.simulation {
+    DiscreteEvent.simulation do
       alerts = [Alert.new(12, 'ha!'), Alert.new(42, 'ah!')] # and many more
       at_each alerts, :when do |alert|
         output << now << alert.message
       end
       run
-    }
+    end
     assert_equal [12, 'ha!', 42, 'ah!'], output
   end
 
   def test_at_each_with_proc
     output = []
-    DiscreteEvent.simulation {
+    DiscreteEvent.simulation do
       alerts = [Alert.new(12, 'ha!'), Alert.new(42, 'ah!')] # and many more
       at_each(alerts, proc { |alert| alert.when }) do |alert|
         output << now << alert.message
       end
       run
-    }
+    end
     assert_equal [12, 'ha!', 42, 'ah!'], output
   end
 
   Alert2 = Struct.new(:time, :message)
   def test_at_each_with_default
     output = []
-    DiscreteEvent.simulation {
+    DiscreteEvent.simulation do
       alerts = [Alert2.new(12, 'ha!'), Alert2.new(42, 'ah!')] # and many more
       at_each alerts do |alert|
         output << now << alert.message
       end
       run
-    }
+    end
     assert_equal [12, 'ha!', 42, 'ah!'], output
   end
 
   def test_next_event_time
-    output= []
-    s = DiscreteEvent.simulation {
+    output = []
+    s = DiscreteEvent.simulation do
       at 0 do
         output << next_event_time
       end
@@ -197,7 +201,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
       at 5 do
         output << next_event_time
       end
-    }
+    end
     assert_equal 0, s.next_event_time
     assert s.run_next
     assert_equal 5, s.next_event_time
@@ -217,16 +221,16 @@ class TestDiscreteEvent < Test::Unit::TestCase
     eq.at 42 do
       output << 'bye'
     end
-    for t in eq.to_enum
+    eq.to_enum.each do |t|
       output_times << t
     end
-    assert_equal %w(hi bye), output
+    assert_equal %w[hi bye], output
     assert_equal [13, 42], output_times
   end
 
   def test_mm1_queue_demo
     # Just run the demo... 1000 isn't enough to get a reliable average.
-    obs_q, exp_q, obs_w, exp_w= mm1_queue_demo(0.25, 0.5, 1000)
+    _obs_q, exp_q, _obs_w, exp_w = mm1_queue_demo(0.25, 0.5, 1000)
     assert_near exp_q, 0.5   # mean queue = rho^2 / (1 - rho)
     assert_near exp_w, 2.0   # mean wait  = rho / (mu - lambda)
   end
@@ -234,7 +238,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
   def test_producer_consumer
     event_queue = EventQueue.new(0)
     consumer = Consumer.new(event_queue)
-    producer = Producer.new(event_queue, %w(a b c d), consumer)
+    producer = Producer.new(event_queue, %w[a b c d], consumer)
 
     FakeRand.for(consumer, 2, 2, 2, 2)
     FakeRand.for(producer, 1, 1, 1, 1)
@@ -245,14 +249,15 @@ class TestDiscreteEvent < Test::Unit::TestCase
       output << [now, consumer.consumed.dup]
     end
     assert_equal [
-      [1, []],                # first object produced
-      [2, []],                # second object produced
-      [3, ['a']],             # third object produced / first consumed
-      [3, ['a']],
-      [4, ['a', 'b']],        # fourth object produced / second consumed
-      [4, ['a', 'b']],
-      [5, ['a', 'b', 'c']],   # third and fourth objects consumed
-      [6, ['a', 'b', 'c', 'd']]], output
+      [1, []],          # first object produced
+      [2, []],          # second object produced
+      [3, %w[a]],       # third object produced / first consumed
+      [3, %w[a]],
+      [4, %w[a b]],     # fourth object produced / second consumed
+      [4, %w[a b]],
+      [5, %w[a b c]],   # third and fourth objects consumed
+      [6, %w[a b c d]]
+    ], output
   end
 
   def test_cancel_single
@@ -287,7 +292,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     out = []
     q = EventQueue.new(0)
     e_a = q.at(5) { out << :a }
-    e_b = q.at(10) { out << :b }
+    q.at(10) { out << :b }
     q.cancel e_a
     nil while q.run_next
     assert_equal [:b], out
@@ -300,17 +305,17 @@ class TestDiscreteEvent < Test::Unit::TestCase
     e_a = q.at(5) do
       out << :a
 
-      e_c = q.at(6) { out << :c }
+      q.at(6) { out << :c }
 
       q.cancel e_a # This should have no effect
     end
 
-    e_b = q.at(10) do
+    q.at(10) do
       out << :b
     end
 
     nil while q.run_next
-    assert_equal [:a, :c, :b], out
+    assert_equal %i[a c b], out
   end
 
   def test_cancel_last
@@ -319,7 +324,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     #
     out = []
     q = EventQueue.new(0)
-    e_a = q.at(5) { out << :a }
+    q.at(5) { out << :a }
     e_b = q.at(10) { out << :b }
     q.cancel e_b
     nil while q.run_next
@@ -332,12 +337,12 @@ class TestDiscreteEvent < Test::Unit::TestCase
     #
     out = []
     q = EventQueue.new(0)
-    e_a = q.at(5) { out << :a }
+    q.at(5) { out << :a }
     e_b = q.at(10) { out << :b }
-    e_c = q.at(13) { out << :c }
+    q.at(13) { out << :c }
     q.cancel e_b
     nil while q.run_next
-    assert_equal [:a, :c], out
+    assert_equal %i[a c], out
   end
 
   def test_cancel_at_same_time_1
@@ -365,7 +370,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     #
     out = []
     q = EventQueue.new(0)
-    e_a = q.at 10 do
+    q.at 10 do
       out << :a
     end
     e_b = q.at 10 do

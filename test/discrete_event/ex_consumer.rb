@@ -23,10 +23,11 @@ module DiscreteEvent
       end
 
       def consume
+        return unless consumed.size < limit
         after rand do
           consumed << now
           consume
-        end if consumed.size < limit
+        end
       end
 
       def start
@@ -71,11 +72,10 @@ module DiscreteEvent
       end
 
       def produce
-        unless @objects.empty?
-          after rand do
-            @consumer.consume @objects.shift
-            produce
-          end
+        return if @objects.empty?
+        after rand do
+          @consumer.consume @objects.shift
+          produce
         end
       end
 
