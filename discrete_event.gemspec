@@ -22,7 +22,8 @@ simulation.'
   s.rubyforge_project = 'discrete_event'
 
   s.add_runtime_dependency 'pqueue', '~> 2.0.2'
-  s.add_development_dependency 'gemma', '>= 5'
+  s.add_development_dependency 'gemma', '~> 5.0'
+  s.add_development_dependency 'simplecov', '~> 0.14'
 
   s.files       = Dir.glob('{lib,bin}/**/*.rb') + %w[README.rdoc]
   s.test_files  = Dir.glob('test/discrete_event/*_test.rb')
