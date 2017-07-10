@@ -18,7 +18,7 @@ module DiscreteEvent
 
       attr_reader :arrival_rate, :service_rate, :system, :served
 
-      def initialize arrival_rate, service_rate
+      def initialize(arrival_rate, service_rate)
         super()
         @arrival_rate, @service_rate = arrival_rate, service_rate
         @system = []
@@ -26,7 +26,7 @@ module DiscreteEvent
       end
 
       # Sample from Exponential distribution with given mean rate.
-      def rand_exp rate
+      def rand_exp(rate)
         -Math::log(rand)/rate
       end
 
@@ -68,7 +68,7 @@ module DiscreteEvent
     #
     # Run until a fixed number of passengers has been served.
     #
-    def mm1_queue_demo arrival_rate, service_rate, num_pax
+    def mm1_queue_demo(arrival_rate, service_rate, num_pax)
       # Run simulation and accumulate stats.
       q = MM1Queue.new arrival_rate, service_rate
       num_served = 0

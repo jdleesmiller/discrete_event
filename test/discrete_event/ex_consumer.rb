@@ -10,7 +10,7 @@ module DiscreteEvent
     class ConsumerSim < DiscreteEvent::Simulation
       attr_reader :consumed, :limit
 
-      def initialize limit, now = 0.0
+      def initialize(limit, now = 0.0)
         super(now)
         @consumed = []
         @limit = limit
@@ -40,7 +40,7 @@ module DiscreteEvent
     class Consumer
       include Events
 
-      def initialize event_queue
+      def initialize(event_queue)
         @event_queue = event_queue
         @objects = []
         @consumed = []
@@ -48,7 +48,7 @@ module DiscreteEvent
 
       attr_reader :consumed
 
-      def consume object
+      def consume(object)
         after rand do
           @consumed << object
         end
@@ -63,7 +63,7 @@ module DiscreteEvent
     class Producer
       include Events
 
-      def initialize event_queue, objects, consumer
+      def initialize(event_queue, objects, consumer)
         @event_queue = event_queue
         @objects = objects
         @consumer = consumer

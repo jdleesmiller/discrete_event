@@ -33,7 +33,7 @@ module DiscreteEvent
     #
     attr_reader :events
 
-    def initialize now=0.0
+    def initialize(now=0.0)
       @now = now
       @events = PQueue.new {|a,b| a.time < b.time}
       @recur_interval = nil
@@ -49,7 +49,7 @@ module DiscreteEvent
     #
     # @return [Event]
     #
-    def at time, &action
+    def at(time, &action)
       raise "cannot schedule event in the past" if time < now
       event = Event.new(time, action)
       @events.push(event)
@@ -66,7 +66,7 @@ module DiscreteEvent
     #
     # @return [Event]
     #
-    def after delay, &action
+    def after(delay, &action)
       at(@now + delay, &action)
     end
 
@@ -77,7 +77,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def cancel event
+    def cancel(event)
       # not very efficient but hopefully not used very often
       temp = []
       until @events.empty? || @events.top.time > event.time
@@ -126,7 +126,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def at_each elements, time=nil, &action
+    def at_each(elements, time=nil, &action)
       raise ArgumentError, 'no action given' unless block_given?
 
       unless elements.empty?
@@ -179,7 +179,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def recur_after interval
+    def recur_after(interval)
       raise "cannot recur twice" if @recur_interval
       @recur_interval = interval
       nil
@@ -207,7 +207,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def every interval, start=0, &action
+    def every(interval, start=0, &action)
       at start do
         yield
         recur_after interval
@@ -267,7 +267,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def run_to time
+    def run_to(time)
       # add an event to ensure that we actually stop at the given time, even if
       # there isn't an event in the queue
       at time do
@@ -310,7 +310,7 @@ module DiscreteEvent
     #
     # @return [self]
     #
-    def reset now=0.0
+    def reset(now=0.0)
       @now = now
       @events.clear
       self

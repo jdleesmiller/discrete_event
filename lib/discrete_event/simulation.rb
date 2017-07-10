@@ -23,7 +23,7 @@ module DiscreteEvent
     # @yield [] after each event runs
     # @return [nil]
     #
-    def run &block
+    def run(&block)
       start if @events.empty?
       catch :stop do
         if block_given?

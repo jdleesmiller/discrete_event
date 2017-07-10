@@ -17,7 +17,7 @@ module DiscreteEvent
     #
     # @return [Event]
     #
-    def at time, &action
+    def at(time, &action)
       event_queue.at(time, &action)
     end
 
@@ -30,7 +30,7 @@ module DiscreteEvent
     #
     # @return [Event]
     #
-    def after delay, &action
+    def after(delay, &action)
       event_queue.after(delay, &action)
     end
 
@@ -39,7 +39,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def cancel event
+    def cancel(event)
       event_queue.cancel(event)
     end
 
@@ -64,7 +64,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def at_each elements, time=nil, &action
+    def at_each(elements, time=nil, &action)
       event_queue.at_each(elements, time, &action)
     end
 
@@ -75,7 +75,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def recur_after interval
+    def recur_after(interval)
       event_queue.recur_after(interval)
     end
 
@@ -87,7 +87,7 @@ module DiscreteEvent
     # @param [Numeric] start block first runs at this time
     #
     # @return [nil]
-    def every interval, start=0, &action
+    def every(interval, start=0, &action)
       event_queue.every(interval, start, &action)
     end
 

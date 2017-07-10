@@ -15,7 +15,7 @@ module DiscreteEvent
   #
   # @return [Simulation]
   #
-  def self.simulation *args, &block
+  def self.simulation(*args, &block)
     sim = DiscreteEvent::Simulation.new(*args)
     sim.instance_eval(&block)
     sim

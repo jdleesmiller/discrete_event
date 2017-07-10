@@ -37,7 +37,7 @@ module DiscreteEvent
     # @param [Array] fakes sequence of numbers to return
     # @return [nil]
     #
-    def self.for object, *fakes
+    def self.for(object, *fakes)
       undo_for(object) # in case rand is already faked
       (class << object; self; end).instance_eval do
         define_method :rand do |*args|
@@ -63,7 +63,7 @@ module DiscreteEvent
     # @param [Object] object to modify
     # @return [nil]
     #
-    def self.undo_for object
+    def self.undo_for(object)
       if object.methods.map(&:to_s).member?('rand')
         (class << object; self; end).instance_eval do
           remove_method :rand
