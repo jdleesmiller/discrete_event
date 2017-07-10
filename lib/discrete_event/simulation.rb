@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module DiscreteEvent
   #
   # A simulation, including an {EventQueue}, the current time, and various

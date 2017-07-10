@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module DiscreteEvent
   #
   # Mix-in for simulations with multiple objects that have to share the same

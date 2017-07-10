@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module DiscreteEvent
   #
   # A utility for testing objects that use the built-in Ruby pseudorandom
