@@ -7,7 +7,7 @@ require 'gemma'
 
 Gemma::RakeTasks.with_gemspec_file 'discrete_event.gemspec'
 
-task :default => :test
+task default: :test
 
 file 'README.rdoc' => ['make_readme.erb'] + Dir['test/ex_*.rb'] do |t|
   File.open(t.name, 'w') do |f|
@@ -15,5 +15,5 @@ file 'README.rdoc' => ['make_readme.erb'] + Dir['test/ex_*.rb'] do |t|
   end
 end
 
-task :yard => 'README.rdoc'
-task :rdoc => 'README.rdoc'
+task yard: 'README.rdoc'
+task rdoc: 'README.rdoc'
