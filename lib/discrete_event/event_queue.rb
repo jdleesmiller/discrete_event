@@ -36,7 +36,7 @@ module DiscreteEvent
 
     def initialize(now=0.0)
       @now = now
-      @events = PQueue.new { |a,b| a.time < b.time }
+      @events = PQueue.new { |a, b| a.time < b.time }
       @recur_interval = nil
     end
 

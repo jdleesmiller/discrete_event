@@ -145,7 +145,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
       end
       run
     }
-    assert_equal [0,3,6,9,12], output
+    assert_equal [0, 3, 6, 9, 12], output
   end
 
   Alert = Struct.new(:when, :message)
