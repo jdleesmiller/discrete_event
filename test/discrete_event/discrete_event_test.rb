@@ -64,7 +64,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
   def test_mm1_queue_not_busy
     # Service begins immediately when queue is not busy.
     q = MM1Queue.new 0.5, 1.0
-    fakes = [1, 1, 1, 1, 1].map {|x| 1/Math::E**x}
+    fakes = [1, 1, 1, 1, 1].map { |x| 1/Math::E**x }
     FakeRand.for(q, *fakes)
     q.run do
       throw :stop if q.served.size >= 2
@@ -84,7 +84,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
       0.01, 0.01,      # arrival times for second two customers
       1,               # arrival for forth customer
       0.1, 0.1,        # service times for second two customers
-      1].map {|x| 1/Math::E**x}
+      1].map { |x| 1/Math::E**x }
     FakeRand.for(q, *fakes)
     q.run do
       throw :stop if q.served.size >= 3
@@ -165,7 +165,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     output = []
     DiscreteEvent.simulation {
       alerts = [Alert.new(12, "ha!"), Alert.new(42, "ah!")] # and many more
-      at_each(alerts, proc{|alert| alert.when}) do |alert|
+      at_each(alerts, proc{ |alert| alert.when }) do |alert|
         output << now << alert.message
       end
       run
