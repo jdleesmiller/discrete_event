@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
 # frozen_string_literal: true
 
+require 'English'
+
 lib = File.expand_path('../lib/', __FILE__)
-$:.unshift lib unless $:.include?(lib)
+$LOAD_PATH.unshift lib unless $LOAD_PATH.include?(lib)
 
 require 'discrete_event/version'
 
