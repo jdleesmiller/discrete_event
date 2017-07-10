@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module DiscreteEvent
   #
   # Queue of pending events; also keeps track of the clock (the current time).

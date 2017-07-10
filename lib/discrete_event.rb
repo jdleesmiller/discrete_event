@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'pqueue'
 
 require 'discrete_event/event_queue'

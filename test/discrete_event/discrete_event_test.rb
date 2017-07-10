@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'discrete_event/test_helper'
 
 require 'discrete_event/ex_consumer.rb'
