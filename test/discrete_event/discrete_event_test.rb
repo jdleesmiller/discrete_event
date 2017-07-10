@@ -9,7 +9,7 @@ include DiscreteEvent
 include DiscreteEvent::Example
 
 class TestDiscreteEvent < Test::Unit::TestCase
-  def assert_near(expected, observed, tol=1e-6)
+  def assert_near(expected, observed, tol = 1e-6)
     assert((expected - observed).abs < tol,
       "expected |#{expected} - #{observed}| < #{tol}")
   end

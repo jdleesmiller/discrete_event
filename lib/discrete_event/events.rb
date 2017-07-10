@@ -65,7 +65,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def at_each(elements, time=nil, &action)
+    def at_each(elements, time = nil, &action)
       event_queue.at_each(elements, time, &action)
     end
 
@@ -88,7 +88,7 @@ module DiscreteEvent
     # @param [Numeric] start block first runs at this time
     #
     # @return [nil]
-    def every(interval, start=0, &action)
+    def every(interval, start = 0, &action)
       event_queue.every(interval, start, &action)
     end
 
