@@ -7,4 +7,3 @@ gemspec
 gem 'rainbow', '~> 2.1.0'
 
 gem 'simplecov', require: false, group: :test
-gem 'test-unit', require: false, group: :test

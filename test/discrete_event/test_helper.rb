@@ -3,5 +3,5 @@
 require 'simplecov'
 SimpleCov.start
 
-require 'test/unit'
+require 'minitest/autorun'
 require 'discrete_event'

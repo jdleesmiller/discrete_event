@@ -8,7 +8,7 @@ require 'discrete_event/ex_mm1_queue.rb'
 include DiscreteEvent
 include DiscreteEvent::Example
 
-class TestDiscreteEvent < Test::Unit::TestCase
+class TestDiscreteEvent < MiniTest::Test
   def assert_near(expected, observed, tol = 1e-6)
     assert(
       (expected - observed).abs < tol,
@@ -29,7 +29,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal [0.125, 0.375, 0.875], c.consumed
 
     # Now have run out of fakes.
-    assert_raise(RuntimeError) { c.reset.run }
+    assert_raises(RuntimeError) { c.reset.run }
 
     # See what happens if we fake twice.
     FakeRand.for(c, 0.5, 0.25, 0.125)
@@ -37,7 +37,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal [0.5, 0.75, 0.875], c.consumed
 
     # Now have run out of fakes, again.
-    assert_raise(RuntimeError) { c.reset.run }
+    assert_raises(RuntimeError) { c.reset.run }
 
     # Can undo and get original behavior back.
     FakeRand.undo_for(c)
@@ -61,7 +61,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     assert_equal 10, o.test
 
     # Now have run out of fakes.
-    assert_raise(RuntimeError) { o.test }
+    assert_raises(RuntimeError) { o.test }
   end
 
   def test_mm1_queue_not_busy
