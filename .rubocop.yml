@@ -1,2 +1,7 @@
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.2
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - 'test/**/*'

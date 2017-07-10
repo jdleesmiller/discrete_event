@@ -86,8 +86,8 @@ module DiscreteEvent
         break if e.equal?(event)
         temp << e
       end
-      temp.each do |e|
-        @events.push(e)
+      temp.each do |temp_event|
+        @events.push(temp_event)
       end
       nil
     end
@@ -208,7 +208,7 @@ module DiscreteEvent
     #
     # @return [nil]
     #
-    def every(interval, start = 0, &action)
+    def every(interval, start = 0)
       at start do
         yield
         recur_after interval
@@ -227,11 +227,7 @@ module DiscreteEvent
     #
     def next_event_time
       event = @events.top
-      if event
-        event.time
-      else
-        nil
-      end
+      event.time if event
     end
 
     #

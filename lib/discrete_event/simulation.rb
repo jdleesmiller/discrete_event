@@ -14,8 +14,7 @@ module DiscreteEvent
     #
     # @abstract
     #
-    def start
-    end
+    def start; end
 
     #
     # Run (or continue, if there are existing events) the simulation until
@@ -24,7 +23,7 @@ module DiscreteEvent
     # @yield [] after each event runs
     # @return [nil]
     #
-    def run(&block)
+    def run
       start if @events.empty?
       catch :stop do
         if block_given?

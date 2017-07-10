@@ -47,7 +47,7 @@ module DiscreteEvent
 
           # can be either the rand() or rand(n) form
           n = args.shift || 0
-          if n == 0
+          if n.zero?
             r
           else
             (r * n).to_i
@@ -65,10 +65,9 @@ module DiscreteEvent
     # @return [nil]
     #
     def self.undo_for(object)
-      if object.methods.map(&:to_s).member?('rand')
-        (class << object; self; end).instance_eval do
-          remove_method :rand
-        end
+      return unless object.methods.map(&:to_s).member?('rand')
+      (class << object; self; end).instance_eval do
+        remove_method :rand
       end
     end
   end
