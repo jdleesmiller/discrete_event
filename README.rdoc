@@ -31,16 +31,17 @@ subclass of {DiscreteEvent::EventQueue}, to simulate an M/M/1 queueing system.
 
     attr_reader :arrival_rate, :service_rate, :system, :served
 
-    def initialize arrival_rate, service_rate
+    def initialize(arrival_rate, service_rate)
       super()
-      @arrival_rate, @service_rate = arrival_rate, service_rate
+      @arrival_rate = arrival_rate
+      @service_rate = service_rate
       @system = []
       @served = []
     end
 
     # Sample from Exponential distribution with given mean rate.
-    def rand_exp rate
-      -Math::log(rand)/rate
+    def rand_exp(rate)
+      -Math.log(rand) / rate
     end
 
     # Customer arrival process.
@@ -69,7 +70,11 @@ subclass of {DiscreteEvent::EventQueue}, to simulate an M/M/1 queueing system.
     # Number of customers currently waiting for service (does not include
     # the one (if any) currently being served).
     def queue_length
-      if system.empty? then 0 else system.length - 1 end
+      if system.empty?
+        0
+      else
+        system.length - 1
+      end
     end
 
     # Called by super.run.
@@ -81,7 +86,7 @@ subclass of {DiscreteEvent::EventQueue}, to simulate an M/M/1 queueing system.
   #
   # Run until a fixed number of passengers has been served.
   #
-  def mm1_queue_demo arrival_rate, service_rate, num_pax
+  def mm1_queue_demo(arrival_rate, service_rate, num_pax)
     # Run simulation and accumulate stats.
     q = MM1Queue.new arrival_rate, service_rate
     num_served = 0
@@ -89,7 +94,7 @@ subclass of {DiscreteEvent::EventQueue}, to simulate an M/M/1 queueing system.
     total_wait = 0.0
     q.run do
       unless q.served.empty?
-        raise "confused" if q.served.size > 1
+        raise 'confused' if q.served.size > 1
         c = q.served.shift
         total_queue += c.queue_on_arrival
         total_wait  += c.service_begin - c.arrival_time
@@ -103,10 +108,11 @@ subclass of {DiscreteEvent::EventQueue}, to simulate an M/M/1 queueing system.
     expected_mean_wait = rho / (service_rate - arrival_rate)
     expected_mean_queue = arrival_rate * expected_mean_wait
 
-    return total_queue / num_served, expected_mean_queue,
-           total_wait  / num_served, expected_mean_wait
+    [
+      total_queue / num_served, expected_mean_queue,
+      total_wait  / num_served, expected_mean_wait
+    ]
   end
-
 
 
 This and other examples are available in the <tt>test/discrete_event</tt>
@@ -157,7 +163,7 @@ You may also be interested in the Ruby bindings of the GNU Science Library, whic
 
 == LICENSE
 
-Copyright (c) 2010-2011 John Lees-Miller
+Copyright (c) 2010-2017 John Lees-Miller
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

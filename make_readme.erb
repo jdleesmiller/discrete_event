@@ -17,8 +17,9 @@ subclass of {DiscreteEvent::EventQueue}, to simulate an M/M/1 queueing system.
   require 'discrete_event'
 <%=
   File.readlines('test/discrete_event/ex_mm1_queue.rb').
-    select{|l| l =~ /^\s{4}/ || l.strip.size == 0}.
-    map{|l| l.sub(/^\s{2}/,'')}.join
+    select { |l| l =~ /^\s{4}/ || l.strip.size == 0 }.
+    drop(1).
+    map { |l| l.sub(/^\s{2}/,'') }.join
 %>
 
 This and other examples are available in the <tt>test/discrete_event</tt>
@@ -69,7 +70,7 @@ You may also be interested in the Ruby bindings of the GNU Science Library, whic
 
 == LICENSE
 
-Copyright (c) 2010-2011 John Lees-Miller
+Copyright (c) 2010-2017 John Lees-Miller
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
