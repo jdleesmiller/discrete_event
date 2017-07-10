@@ -260,7 +260,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     #
     out = []
     q = EventQueue.new(0)
-    e_a = q.at( 5) { out << :a }
+    e_a = q.at(5) { out << :a }
     q.cancel e_a
     assert !q.run_next
     assert_equal [], out
@@ -272,7 +272,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     #
     out = []
     q = EventQueue.new(0)
-    e_a = q.at( 5) { out << :a }
+    e_a = q.at(5) { out << :a }
     assert q.run_next
     assert_equal [:a], out
     q.cancel e_a
@@ -285,7 +285,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     #
     out = []
     q = EventQueue.new(0)
-    e_a = q.at( 5) { out << :a }
+    e_a = q.at(5) { out << :a }
     e_b = q.at(10) { out << :b }
     q.cancel e_a
     nil while q.run_next
@@ -296,7 +296,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     out = []
     q = EventQueue.new(0)
 
-    e_a = q.at( 5) do
+    e_a = q.at(5) do
       out << :a
 
       e_c = q.at(6) { out << :c }
@@ -318,7 +318,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     #
     out = []
     q = EventQueue.new(0)
-    e_a = q.at( 5) { out << :a }
+    e_a = q.at(5) { out << :a }
     e_b = q.at(10) { out << :b }
     q.cancel e_b
     nil while q.run_next
@@ -331,7 +331,7 @@ class TestDiscreteEvent < Test::Unit::TestCase
     #
     out = []
     q = EventQueue.new(0)
-    e_a = q.at( 5) { out << :a }
+    e_a = q.at(5) { out << :a }
     e_b = q.at(10) { out << :b }
     e_c = q.at(13) { out << :c }
     q.cancel e_b
