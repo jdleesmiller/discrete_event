@@ -25,13 +25,13 @@ simulation.'
   s.add_development_dependency 'gemma', '~> 5.0'
   s.add_development_dependency 'simplecov', '~> 0.14'
 
-  s.files       = Dir.glob('{lib,bin}/**/*.rb') + %w[README.rdoc]
+  s.files       = Dir.glob('{lib,bin}/**/*.rb') + %w[README.md]
   s.test_files  = Dir.glob('test/discrete_event/*_test.rb')
   s.executables = Dir.glob('bin/*').map { |f| File.basename(f) }
 
   s.rdoc_options = [
-    '--main',    'README.rdoc',
+    '--main',    'README.md',
     '--title',   "#{s.full_name} Documentation"
   ]
-  s.extra_rdoc_files << 'README.rdoc'
+  s.extra_rdoc_files << 'README.md'
 end
