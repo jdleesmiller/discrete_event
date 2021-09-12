@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pqueue'
+require 'fc'
 
 require 'discrete_event/event_queue'
 require 'discrete_event/events'

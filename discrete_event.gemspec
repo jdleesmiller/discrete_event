@@ -21,7 +21,7 @@ simulation.'
 
   s.rubyforge_project = 'discrete_event'
 
-  s.add_runtime_dependency 'pqueue', '~> 2.0'
+  s.add_runtime_dependency 'priority_queue_cxx', '~> 0.3.4'
   s.add_development_dependency 'gemma', '~> 5.0'
   s.add_development_dependency 'simplecov', '~> 0.14'
 

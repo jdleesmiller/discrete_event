@@ -36,7 +36,7 @@ module DiscreteEvent
 
     def initialize(now = 0.0)
       @now = now
-      @events = PQueue.new { |a, b| a.time < b.time }
+      @events = FastContainers::PriorityQueue.new(:min)
       @recur_interval = nil
     end
 
@@ -53,7 +53,7 @@ module DiscreteEvent
     def at(time, &action)
       raise 'cannot schedule event in the past' if time < now
       event = Event.new(time, action)
-      @events.push(event)
+      @events.push(event, time)
       event
     end
 
@@ -81,13 +81,14 @@ module DiscreteEvent
     def cancel(event)
       # not very efficient but hopefully not used very often
       temp = []
-      until @events.empty? || @events.top.time > event.time
-        e = @events.pop
+      until @events.empty? || @events.top_key > event.time
+        e = @events.top
+        @events.pop
         break if e.equal?(event)
         temp << e
       end
       temp.each do |temp_event|
-        @events.push(temp_event)
+        @events.push(temp_event, temp_event.time)
       end
       nil
     end
@@ -226,8 +227,7 @@ module DiscreteEvent
     # @return [Numeric, nil]
     #
     def next_event_time
-      event = @events.top
-      event.time if event
+      @events.top_key unless @events.empty?
     end
 
     #
@@ -236,23 +236,23 @@ module DiscreteEvent
     # @return [Boolean] false if there are no more events.
     #
     def run_next
-      event = @events.pop
-      if event
-        # run the action
-        @now = event.time
-        event.action.call
+      return false if @events.empty?
 
-        # Handle recurring events.
-        if @recur_interval
-          event.time = @now + @recur_interval
-          @events.push(event)
-          @recur_interval = nil
-        end
+      event = @events.top
+      @events.pop
 
-        true
-      else
-        false
+      # run the action
+      @now = event.time
+      event.action.call
+
+      # Handle recurring events.
+      if @recur_interval
+        event.time = @now + @recur_interval
+        @events.push(event, event.time)
+        @recur_interval = nil
       end
+
+      true
     end
 
     #
@@ -309,7 +309,7 @@ module DiscreteEvent
     #
     def reset(now = 0.0)
       @now = now
-      @events.clear
+      @events = FastContainers::PriorityQueue.new(:min)
       self
     end
   end
