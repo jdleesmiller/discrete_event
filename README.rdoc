@@ -2,7 +2,7 @@
 
 http://github.com/jdleesmiller/discrete_event
 
-{<img src="https://secure.travis-ci.org/jdleesmiller/discrete_event.png"/>}[http://travis-ci.org/jdleesmiller/discrete_event]
+<img src="https://github.com/jdleesmiller/discrete_event/actions/workflows/ruby.yml/badge.svg"/>
 
 == SYNOPSIS
 
