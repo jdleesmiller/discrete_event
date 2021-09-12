@@ -133,10 +133,14 @@ easily share a single event queue.
 You may also be interested in the Ruby bindings of the GNU Science Library, which provides a variety of pseudo-random number generators and functions for generating random variates from various distributions. It also provides useful things like histograms.
 
 * {http://www.gnu.org/software/gsl/}
-* {http://rb-gsl.rubyforge.org/}
+* {https://rubygems.org/gems/rb-gsl}
 * The libgsl-ruby package in Debian.
 
 == HISTORY
+
+<em>3.0.0:</em>
+* drop support for rubies older than 2.6
+* change priority queue implementation to {https://rubygems.org/gems/priority_queue_cxx} for performance
 
 <em>2.0.0:</em>
 * drop support for rubies older than 2.2
@@ -169,7 +173,7 @@ You may also be interested in the Ruby bindings of the GNU Science Library, whic
 
 == LICENSE
 
-Copyright (c) 2010-2017 John Lees-Miller
+Copyright (c) 2010–2021 John Lees-Miller
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
